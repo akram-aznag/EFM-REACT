@@ -1,41 +1,44 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { useParams ,Link} from 'react-router-dom';
 
-export default function Afficher() {
-    const infos=useSelector(state=>state.info);
-      console.log(infos);
+export default function Detaile() {
+    const infos = useSelector(state => state.info);
+    const { id } = useParams();
+    let ID=parseInt (id);
+    const result = infos.find(stagaire => stagaire.id === ID);
+    if(result){
+      console.log('the result is ',result)
+    }
+    else{
+      console.log('not found')
+    }
 
-    const {id}=useParams();
-  return (
-    <div>
-        <h1>afficher</h1>
-        {infos?
-            infos.map(element=>{
-                return(
-                    <div class="card" style={{width: '18rem'}}>
-                    <img class="card-img-top" src={element.image} alt="Card image cap"/>
-
+    return (
+      <div>
+        {
+          result?   
+          <div>
+          <h1>the detaile of {result.nom}</h1>
+             <div class="card" style={{width: '18rem'}}>
+                <img class="card-img-top" src={result.image} alt="Card image cap"/>
                     <div class="card-body">
-                    <div>
-                        <span>nom:{element.nom}</span>
-                       
+                        <div>
+                          <span>nom:{result.nom}</span>
+                        </div>
+                        <div>
+                          <span>prenom:{result.prenom}</span>
+                        </div>
+                        <div>
+                          <span>fillier:{result.fillier}</span>
+                        </div>
+                          <Link to='/'>go back</Link>
                     </div>
-                    <div>
-                        <span>prenom:{element.prenom}</span>
-                       
-                    </div>
-                    <div>
-                        <span>fillier:{element.fillier}</span>
-                       
-                    </div>
-                    
-                      <Link to={`/detailes/${element.id}`}>details</Link>
-                    </div>
-                  </div>
-                )
-            })
-        :"empty"}
-    </div>
-  )
+                </div>
+          </div>
+          
+          :"not found"
+        }
+      </div>
+    );
 }
